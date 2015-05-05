@@ -17,7 +17,7 @@ class Main extends PluginBase implements Listener {
 	
     public function onEnable(){
      if ($this->getServer()->getPluginManager()->getPlugin("FastTransfer")){
-     $this->getLogger()->info(TextFormat::GREEN ."Enabling Add-On for FastTransfer");
+     $this->getLogger()->info(TextFormat::GREEN ."Enabling the Add-On for FastTransfer");
 	 $this->getServer()->getPluginManager()->registerEvents($this, $this);
 /**
                              $this->getServer()->getPluginManager()->registerEvents($this, $this);
@@ -45,14 +45,14 @@ class Main extends PluginBase implements Listener {
             }
      	}
 		if ($event->getItem()->getId() == Item::SIGN) {
-			// Check if the user is holding a sign this stops teleports
+			// Check if the user is holding a sign because this stops the teleporting process
 			$pl = $event->getPlayer();
-			$pl->sendMessage(TextFormat::RED ."Can not teleport while holding sign!");
+			$pl->sendMessage(TextFormat::RED ."You cannot teleport while holding a sign!");
 			return;
 		}
 				if(!$pl->hasPermission("sign.transfer.touch")) {
 			$pl = $event->getPlayer();
-			$pl->sendMessage(TextFormat::RED ."You cant be transferred");
+			$pl->sendMessage(TextFormat::RED ."You cannot be transferred");
 			return;
 		}
 			$sign = $sign->getText();
@@ -61,21 +61,21 @@ class Main extends PluginBase implements Listener {
 			$port = $sign[2];
 			if (empty($address)) return null;
 			$port = intval($port);
-			if ($port == 0) $port = 19132; // Default
+			if ($port == 0) $port = 19132; // Default port, It's fine!
 			return [$address,$port];
 		}
 		$this->teleporters[$pl->getName()] = time();
 		$ft = $this->getServer()->getPluginManager()->getPlugin("FastTransfer");
 		if (!$ft) {
-			$this->getLogger()->info("FastTransfer is not installed on this server"); // REMOVED LATER
+			$this->getLogger()->info("FastTransfer is not installed on this server. Please install as a separate plugin."); // REMOVED LATER
 			$pl->sendMessage("Nothing happens!");
-			$pl->sendMessage("Someone has removed FastTransfer.");
+			$pl->sendMessage("Someone has removed FastTransfer. Please check.");
 			return;
 		}
 		$this->getLogger()->info("- Player:  ".$pl->getName()." => ".
 										 $addr.":".$port);
 		$ft->transferPlayer($pl,$addr,$port);
 		if ($this->broadcast)
-			$this->getServer()->broadcastMessage($pl->getName()." transferred...");
+			$this->getServer()->broadcastMessage($pl->getName()." has been transferred");
 		}
 	}
